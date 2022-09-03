@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Esimene Reacti katsetus</title>
+
+
+</head>
+
+<body>
+    <div id="kiht1">Kiht 1</div>
+
+
+</body>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    function Bmi (props){
+        const kaal = props.kaal;
+        const pikkus = props.pikkus;
+        
+        if (typeof kaal !== 'undefined' && typeof pikkus !== 'undefined') {
+            return (kaal / Math.pow((pikkus / 100), 2)).toFixed(1);
+
+        } else {
+            return <span>Pikkus ja kaal on teadmata.</span>;
+
+        }
+    }
+    
+    function Hello(props) {
+        const eesnimi = props.eesnimi;
+        const perenimi = props.perenimi;
+        const kmi = Bmi(kaal=props.kaal, pikkus=props.pikkus);
+        if (typeof eesnimi !== 'undefined' && typeof perenimi !== 'undefined') {
+            return <h3>Tere, {props.eesnimi} {props.perenimi}! Kehamassiindeks: {kmi} </h3>;
+
+        } else {
+            return <h3>Tere!</h3>;
+
+        }
+    }
+    const root = ReactDOM.createRoot(document.getElementById('kiht1'))
+    root.render(<Hello eesnimi='Peeter' perenimi='Pakiraam' kaal='90' pikkus='190' />);
+
+
+
+</script>
+
+</html>

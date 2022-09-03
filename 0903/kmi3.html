@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Esimene Reacti katsetus</title>
+
+
+</head>
+
+<body>
+  <div id="kiht1">Kiht 1</div>
+
+
+</body>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+  function Kmiarvutus(props){
+    
+    return (props.kaal / Math.pow((props.pikkus / 100), 2)).toFixed(1)
+  }
+  function Kmi(props) {
+    const [kaal, setKaal] = React.useState(80);
+    const [pikkus, setPikkus] = React.useState(180);
+    return (
+      <div>
+        <p>Pikkus {pikkus} cm</p>
+        <button onClick={() => setPikkus(pikkus + 1)}>
+          +1 cm
+        </button>
+        <button onClick={() => setPikkus(pikkus - 1)}>
+          -1 cm
+        </button>
+        <br />
+        <button onClick={() => setPikkus(pikkus + 10)}>
+          +10 cm
+        </button>
+        <button onClick={() => setPikkus(pikkus - 10)}>
+          -10 cm
+        </button>
+
+        <p>Kaal {kaal} kg</p>
+        <button onClick={() => setKaal(kaal + 1)}>
+          +1 kg
+        </button>
+
+        <button onClick={() => setKaal(kaal + 1)}>
+          -1 kg        
+        </button>
+
+        <p>Kehamassiindeks on <Kmiarvutus kaal={kaal} pikkus={pikkus}/></p>
+
+      </div>
+    )
+  }
+  const root = ReactDOM.createRoot(document.getElementById('kiht1'))
+  root.render(<Kmi />);
+
+
+
+</script>
+
+</html>

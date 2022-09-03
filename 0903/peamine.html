@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Esimene Reacti katsetus</title>
+
+
+</head>
+
+<body>
+    <div id="kiht1">Kiht 1</div>
+
+
+</body>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    
+    function Hello(props) {
+        const [count, setCount] = React.useState(0);
+        return (
+			<div>
+			  <p>oled vajutanud {count} korda</p>
+			  <button onClick={() => setCount(count + 1)}>
+				liida
+			  </button>
+              <button onClick={() => setCount(count - 1)}>
+				lahuta
+			  </button>
+              <button onClick={() => setCount(count * 0)}>
+				nulli
+			  </button>
+			</div>
+        )
+    }
+    const root = ReactDOM.createRoot(document.getElementById('kiht1'))
+    root.render(<Hello/>);
+
+
+
+</script>
+
+</html>

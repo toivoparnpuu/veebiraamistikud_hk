@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Esimene Reacti katsetus</title>
+
+
+</head>
+
+<body>
+    <div id="tere1">tere1</div>
+    <div id="tere2">tere2</div>
+    <div id="tere3">tere3</div>
+    
+</body>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    function Hello(props) {
+        const eesnimi = props.eesnimi;
+        const perenimi = props.perenimi;
+
+        if (typeof eesnimi !== 'undefined' && typeof perenimi !== 'undefined') {
+            return <h3>Tere, {props.eesnimi} {props.perenimi}!</h3>;
+            
+        } else {
+            return <h3>Tere!</h3>;
+            
+        }
+        return tervitus;
+    }
+    const esimene = ReactDOM.createRoot(document.getElementById('tere1'))
+    esimene.render(<Hello eesnimi='Peeter' perenimi='Pakiraam'/>);
+    
+    const teine = ReactDOM.createRoot(document.getElementById('tere2'))
+    teine.render(<Hello perenimi='Pakiraam'/>);
+
+    const kolmas = ReactDOM.createRoot(document.getElementById('tere3'))
+    kolmas.render(<Hello />);
+
+
+</script>
+
+</html>

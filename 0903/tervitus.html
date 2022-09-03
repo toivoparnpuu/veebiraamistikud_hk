@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Esimene Reacti katsetus</title>
+
+
+</head>
+
+<body>
+    <div id="kiht1">Siia tuleb react</div>
+</body>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    function Hello(props) {
+        return <h3>Tere, {props.eesnimi} {props.perenimi}!</h3>;
+    }
+    const root = ReactDOM.createRoot(document.getElementById('kiht1'))
+    root.render(<Hello eesnimi='Peeter' perenimi='Pakiraam'/>);
+</script>
+
+</html>
