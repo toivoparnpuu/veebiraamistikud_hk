@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reacti katsetused</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="kiht1"></div>	
+  </body>
+  <script type="text/babel">
+     const algLoetelu=[
+	   {knimi:"juku", pikkus: 170, mass:75},
+	   {knimi:"mati", pikkus: 165, mass:65}
+	 ];
+	 
+	 function Isik(props){
+	   // console.log(props);
+	     function kustuta(kustutatav){
+		    if(confirm("Kas soovid kustutada kasutaja "+kustutatav+"?")){
+		     props.yldMuudaLoetelu(
+			    props.yldloetelu.filter((k1) => kustutatav!=k1.knimi));
+		    }
+		 }
+		 
+	   
+	    return <li key={props.kirje.knimi}>{props.kirje.knimi} {props.kirje.pikkus}
+		  <button onClick={() => 
+		    {props.kirje.pikkus++; props.yldMuudaLoetelu([...props.yldloetelu])}}>+
+		  </button>
+		  <button onClick={() => kustuta(props.kirje.knimi)}>X</button>
+		</li>
+		//Küsige, kas soovitakse kustutada
+	 }
+	 
+	 function Kuvamine(){
+	     const [loetelu, muudaLoetelu] = React.useState(algLoetelu);
+		 const [knimi, muudaKnimi] = React.useState("nimetu");
+		 const [pikkus, muudaPikkus] = React.useState(100);
+		 const [mass, muudaMass] = React.useState(50);
+		 
+		 function lisa(){
+		   let vaba=true;
+		   for(let i=0; i<loetelu.length; i++){
+		      if(loetelu[i].knimi==knimi){vaba=false; alert("juba olemas");}
+		   }		   
+		   if(vaba){muudaLoetelu(loetelu.concat({knimi:knimi, pikkus:pikkus, mass:mass}))}
+		 }
+		 
+		 
+		
+		 return <div><ul>{
+		   loetelu.map((kirje) => <Isik kirje={kirje} key={kirje.knimi} 
+		      yldloetelu={loetelu} yldMuudaLoetelu={muudaLoetelu}/>) 
+		 }</ul>
+		    <input type="text" value={knimi} onChange={(e) => muudaKnimi(e.target.value)} />
+		    <input type="number" value={pikkus} onChange={(e) => muudaPikkus(e.target.value)} />
+		    <input type="number" value={mass} onChange={(e) => muudaMass(e.target.value)} />
+			<input type="button" value="Lisa" onClick={() => lisa()} />
+			
+		 </div>
+	 }
+
+     const root= ReactDOM.createRoot(document.getElementById("kiht1"))
+     root.render(<Kuvamine />);
+  </script>
