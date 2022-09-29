@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Isikute andmed</title>
+
+
+</head>
+
+<body>
+    <div id="kiht1">Kiht 1</div>
+
+
+</body>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    const algLoetelu = [
+        { knimi: 'Juku', pikkus: 180, mass: 75 },
+        { knimi: 'Kairi', pikkus: 175, mass: 65 }
+    ];
+
+    function Kuvamine() {
+        const [loetelu, muudaLoetelu] = React.useState(algLoetelu);
+        const [knimi, muudaKnimi] = React.useState("nimetu");
+        const [pikkus, muudaPikkus] = React.useState(100);
+        const [mass, muudaMass] = React.useState(50);
+
+        function Lisa(){
+            let vaba = true;
+            for (let i=0; i<loetelu.length; i++){
+                if(loetelu[i].knimi==knimi) {vaba=false;};
+            }
+            if (vaba) {
+                muudaLoetelu(loetelu.concat({knimi:knimi, pikkus:pikkus, mass:mass}));
+            } else {
+                
+                alert('juba olemas');
+            }
+
+
+        }
+
+        return <div><ul>{
+            loetelu.map((kirje) => <li key={kirje.knimi}>{kirje.knimi}: {kirje.pikkus}cm, {kirje.mass}kg</li>)
+
+        }</ul>
+            <input type="text" value={knimi} onChange={ (e) => muudaKnimi(e.target.value)} />
+            <input type="text" value={pikkus} onChange={ (e) => muudaPikkus(e.target.value)} />
+            <input type="text" value={mass} onChange={ (e) => muudaMass(e.target.value)} />
+            <input type="button" value="Lisa" onClick={ () => Lisa()}/>    
+
+
+        </div>
+
+    }
+    const root = ReactDOM.createRoot(document.getElementById('kiht1'))
+    root.render(<Kuvamine />);
+
+
+
+</script>
+
+</html>

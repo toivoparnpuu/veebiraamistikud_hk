@@ -26,6 +26,7 @@
   function Kmi(props) {
     const [kaal, setKaal] = React.useState(80);
     const [pikkus, setPikkus] = React.useState(180);
+    let kmitulem = <Kmiarvutus kaal={kaal} pikkus={pikkus}/>;
     return (
       <div>
         <p>Pikkus {pikkus} cm</p>
@@ -48,12 +49,14 @@
           +1 kg
         </button>
 
-        <button onClick={() => setKaal(kaal + 1)}>
+        <button onClick={() => setKaal(kaal - 1)}>
           -1 kg        
         </button>
 
-        <p>Kehamassiindeks on <Kmiarvutus kaal={kaal} pikkus={pikkus}/></p>
-
+        <p>Kehamassiindeks on {kmitulem}</p>
+        <div style={{"backgroundColor": "black",
+				             "height":pikkus+"px",
+							 "width":kaal+"px"}}>x</div>
       </div>
     )
   }

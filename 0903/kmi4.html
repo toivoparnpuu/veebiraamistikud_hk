@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Reacti katsetused</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="kiht1"></div>
+</body>
+<script type="text/babel">
+
+  function KMI_arvutus(pikkus, mass) {
+    return mass / ((pikkus / 100) * (pikkus / 100))
+  }
+
+  function KMI() {
+    const [pikkus, uusPikkus] = React.useState(190);
+    const [mass, uusMass] = React.useState(90);
+
+    return <span>Pikkus: 
+      <input type="number" value={pikkus} onChange={(e) => uusPikkus(e.target.value)} id="pikkuskast" />
+      Kaal:
+      <input type="number" value={mass} onChange={(e) => uusMass(e.target.value)} id="massikast" />
+      <br />
+      Kehamassi indeks: {KMI_arvutus(pikkus, mass).toFixed(2)} <br />
+      
+      <div style={{
+        "backgroundColor": "black",
+        "height": pikkus + "px",
+        "width": pikkus * KMI_arvutus(pikkus, mass) / 3400 * 50 + "px"
+      }}>x</div>
+    </span>
+  }
+  const root = ReactDOM.createRoot(document.getElementById("kiht1"))
+  root.render(<KMI />);
+</script>
+
+</html>
