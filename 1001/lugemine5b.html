@@ -1,0 +1,36 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>Reacti katsetused</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="kiht1"></div>	
+  </body>
+  <script type="text/babel">
+    function Kuvamine(){
+	    const [aadressid, muudaAadressid]=
+		                         React.useState([]);
+	    const [teade, muudaTeade]=React.useState("abcd");
+		function ava(aadress){
+		   fetch(aadress).then(d => d.text()).then(t => muudaTeade(t));
+		}	   
+		React.useEffect(() => {  
+  		  fetch("https://tigu.hk.tlu.ee/~toivo.parnpuu/veebiraamistikud/1001/teade.php").then(d => d.json()).
+		      then(j => muudaAadressid(j));	
+		}, []);
+	    const nupud=aadressid.map(aadress =>
+		  <input type="button" value={aadress} key={aadress}
+  		    onClick={() => ava(aadress) }/>)
+	    return <div>{teade}<br /> {nupud}</div>;
+	}
+	const root= ReactDOM.createRoot(document.getElementById("kiht1"))
+	root.render(<Kuvamine />)
+  </script>
+</html>
+
+
+
