@@ -13,9 +13,12 @@
 </body>
 <script type="text/babel">
   function Kuvamine() {
-    const [aadressid, muudaAadressid] = React.useState(["teade2.txt", "aa"]);
-    fetch("teated.json").then(d => d.json()).then(j => console.log(j));
-
+    const [aadressid, muudaAadressid] = React.useState([]);
+    
+    React.useEffect(() => { 
+      fetch("teated.json").then(d => d.json()).then(j => muudaAadressid(j));
+      
+    }, []); //käivitab ainult alguses
     const nupud = aadressid.map(aadress => 
     <input type="button" value={aadress} key={aadress}/>)
     return <div>abc {nupud}</div>
