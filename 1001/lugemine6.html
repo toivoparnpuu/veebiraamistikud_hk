@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<!-- katki -->
+<head>
+	<title>Reacti katsetused</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+	<div id="kiht1"></div>
+</body>
+<script type="text/babel">
+	function Kuvamine() {
+		const [aadressid, muudaAadressid] =
+			React.useState([]);
+		const [teade, muudaTeade] = React.useState("abcd");
+		const [uusTeade, lisaUusTeade] = React.useState("");
+		function lisa(uusTeade) {
+			console.log(uusTeade);
+			fetch("lisateade.php?teade=" + encodeURIComponent(uusTeade)).then(() => lisaUusTeade(""));
+
+		}
+
+		function ava(aadress) {
+			fetch(aadress).then(d => d.text()).then(t => muudaTeade(t));
+		}
+		function loeaadressid() {
+			React.useEffect(() => {
+				fetch("teade.php").then(d => d.json()).
+					then(j => muudaAadressid(j));
+
+			}, []);
+		}
+
+		React.useEffect(() => {
+			loeaadressid()
+		})
+		const nupud = aadressid.map(aadress =>
+			<input type="button" value={aadress} key={aadress}
+				onClick={() => ava(aadress)} />)
+		return <div>
+			<input type="text" value={uusTeade} onChange={(e) => lisaUusTeade(e.target.value)} />
+			<input type="button" value="Lisa" onClick={() => lisa(uusTeade)} /> <br />
+			{teade}<br /> {nupud} </div>;
+	}
+	const root = ReactDOM.createRoot(document.getElementById("kiht1"))
+	root.render(<Kuvamine />)
+</script>
+
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Reacti katsetused</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+	<div id="kiht1"></div>
+</body>
+<script type="text/babel">
+	const algLoetelu = [
+		{ id: 0, corseID: "HKI5003.HK", name: "Programmeerimine II", start: "10:00", end: "13:15", date: "2022-09-29" },
+		{ id: 1, corseID: "HKI5070.HK", name: "Arvutivõrgud ja andmeside", start: "14:15", end: "17:30", date: "2022-09-29" }
+	];
+
+
+
+	function Kuvamine() {
+		const [loetelu, muudaLoetelu] = React.useState(algLoetelu);
+		const [knimi, muudaKnimi] = React.useState("nimetu");
+		const [pikkus, muudaPikkus] = React.useState(100);
+		const [mass, muudaMass] = React.useState(50);
+
+		function lisa() {
+			let vaba = true;
+			for (let i = 0; i < loetelu.length; i++) {
+				if (loetelu[i].knimi == knimi) { vaba = false; alert("juba olemas"); }
+			}
+			if (vaba) { muudaLoetelu(loetelu.concat({ knimi: knimi, pikkus: pikkus, mass: mass })) }
+		}
+
+
+
+		return <div><ul>{
+			loetelu.map((kirje) => <Tund kirje={kirje} key={kirje.knimi}
+				yldloetelu={loetelu} yldMuudaLoetelu={muudaLoetelu} />)
+		}</ul>
+			<input type="text" value={knimi} onChange={(e) => muudaKnimi(e.target.value)} />
+			<input type="text" value={pikkus} onChange={(e) => muudaPikkus(e.target.value)} />
+			<input type="text" value={mass} onChange={(e) => muudaMass(e.target.value)} />
+			<input type="button" value="Lisa" onClick={() => lisa()} />
+
+		</div>
+	}
+
+	const root = ReactDOM.createRoot(document.getElementById("kiht1"))
+	root.render(<Kuvamine />);
+</script>
+
+</html>
