@@ -14,7 +14,7 @@
 	    const [aadress, muudaAadress]=React.useState("teade1.txt");
 	    const [aadressid, muudaAadressid]=React.useState([]);
 	    const [teade, muudaTeade]=React.useState("abcd");
-		const [sisestus, muudaSisestus]=React.useState("a");
+		const [sisestus, muudaSisestus]=React.useState("");
 		
         function ava(aadress){
 		   fetch(aadress).then(d => d.text()).then(t => muudaTeade(t));
@@ -25,7 +25,7 @@
 		}
         
         function loeAadressid(){
-  		  fetch("teated.php").then(d => d.json()).
+  		  fetch("teade.php").then(d => d.json()).
 		      then(j => muudaAadressid(j));			
 		}		
 		
@@ -40,7 +40,7 @@
         const nupud=aadressid.map(aadress =>
 		  <input type="button" value={aadress} key={aadress}
   		    onClick={() => muudaAadress(aadress) }/>)
-	    return <div>{teade} {aadress}<br /> {nupud}<br />
+	    return <div>{teade} <br/> {aadress}<br /> {nupud}<br />
 		   <input type="text" value={sisestus} 
 		     onChange={(e) => muudaSisestus(e.target.value)} />
 		   <input type="button" value="Lisa teade"
