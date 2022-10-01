@@ -1,20 +1,63 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Lugemine 2</title>
-	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  </head>
-  <body>
-    <div id="kiht1"></div>	
-  </body>
-  <script type="text/babel">
-	function Kuvamine(){
-			return <div>abc</div>;
-	}
 
-	const root = ReactDOM.createRoot(document.getElementById('kiht1'))
+<head>
+  <title>Lugemine 2</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="kiht1"></div>
+  <p>Allikas: http://www.tlu.ee/~jaagup/andmed/keel/korpus/dokmeta.txt
+  </p>
+</body>
+<script type="text/babel">
+  function Kuvamine() {
+    const [andmed, muudaAndmed] = React.useState([]);
+    const [keeletasemed, muudaKeeletasemed] = React.useState([]);
+
+    function loeAndmed() {
+      fetch("https://www.tlu.ee/~jaagup/andmed/keel/korpus/dokmeta.txt").then(d => d.text()).then(function (t) {
+        //console.log(t.split("\n").length);
+      
+        let m = [];
+      t.split('\n').slice(1).forEach(function (rida) {
+        let r = rida.split(",");
+
+        if (r[2] == "eesti" && r[10] != "NA") {
+
+          let obj = {
+            "kood": r[0],
+            "sugu": r[7],
+            "keeletase": r[10]
+          } //obj
+
+
+          m.push(obj);
+        }; // if
+      }); // t split
+      cosole.log(m);
+      muudaAndmed(m);
+    }); //fetch
+      function tutvuAndmetega(){
+        console.log(andmed.map(a => a.keeletase));
+      }
+      React.useEffect(() => {
+        loeAndmed();
+
+      });
+      React.useEffect(() => {
+        tutvuAndmetega();
+
+      });
+      return <div>abc</div>;
+    } // loe andmed
+  } //kuvamine
+
+    const root = ReactDOM.createRoot(document.getElementById('kiht1'))
     root.render(<Kuvamine />);
-  </script>
+</script>
+
 </html>

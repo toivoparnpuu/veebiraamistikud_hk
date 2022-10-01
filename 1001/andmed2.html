@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reacti katsetused</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="kiht1"></div>	
+  </body>
+  <script type="text/babel">
+    function Kuvamine(){
+	    const [andmed, muudaAndmed]=React.useState([]);
+		const [keeletasemed, muudaKeeletasemed]=React.useState([]);
+        const [sooandmed, muudaSood]=React.useState([]);
+	    function loeAndmed(){
+		   fetch("https://www.tlu.ee/~jaagup/andmed/keel/korpus/dokmeta.txt").then(d => d.text()).then(function(t){
+		      let m=[];
+			  t.split("\n").slice(1).forEach(function(rida){
+			     let r=rida.split(",");
+				 if(r[2]=="eesti" && r[10]!="NA"){
+				  m.push({"kood":r[0], "sugu":r[7], "keeletase":r[10]});
+				 }
+			  });
+			  //console.log(m);
+			  muudaAndmed(m);
+		   });
+		}
+		function tutvuAndmetega(){
+		    //console.log(new Set(andmed.map(a => a.keeletase)));
+            muudaKeeletasemed([...new Set(andmed.map(a => a.keeletase))]);
+            muudaSood([...new Set(andmed.map(a => a.sugu))]);
+
+		}
+		React.useEffect(() => {
+		   tutvuAndmetega();
+		}, [andmed]);
+	    React.useEffect(() => {  
+  		  loeAndmed();
+		}, []);
+	    return <div>abc {andmed.length} <br/> 
+            {keeletasemed.join(", ")} <br/> 
+            {sooandmed.join(", ")}
+            
+            </div>;
+	}
+	const root= ReactDOM.createRoot(document.getElementById("kiht1"))
+	root.render(<Kuvamine />)
+  </script>
+</html>
