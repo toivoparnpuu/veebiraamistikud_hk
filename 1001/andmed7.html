@@ -1,0 +1,110 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>Reacti katsetused</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="kiht1"></div>	
+  </body>
+  <script type="text/babel">
+    function Kuvamine(){
+	    const [andmed, muudaAndmed]=React.useState([]);
+		const [keeletasemed, muudaKeeletasemed]=React.useState({});
+		const [aktiivsedTasemed, muudaAktiivsedTasemed]=
+		                                  React.useState([]);
+		const [sood, muudaSood]=React.useState({});
+	    //Sama sugude kohta
+	    function loeAndmed(){
+		   fetch("https://www.tlu.ee/~jaagup/andmed/keel/korpus/dokmeta.txt").then(d => d.text()).then(function(t){
+		      let m=[];
+			  t.split("\n").slice(1).forEach(function(rida){
+			     let r=rida.split(",");
+				 if(r[2]=="eesti" && r[10]!="NA"){
+				  m.push({"kood":r[0], "sugu":r[7], "keeletase":r[10]});
+				 }
+			  });
+			  muudaAndmed(m);
+		   });
+		}
+		function tutvuAndmetega(){
+		  let k={};  
+          andmed.forEach(function(t){
+		     if(t.keeletase in k){
+			    k[t.keeletase].push(t);
+			 } else {
+			    k[t.keeletase]=[t];
+			 }
+		  });
+		  muudaKeeletasemed(k);
+		  //Sama sugude kohta
+		  let s={};  
+          andmed.forEach(function(t){
+		    //-Kui aktiivne tase on määratud, 
+		//arvesta sugude juures vaid aktiivse keeletasemega inimesi
+		    if(aktiivsedTasemed.find( e => e==t.keeletase) || 
+			   aktiivsedTasemed.length==0){
+		     if(t.sugu in s){
+			    s[t.sugu].push(t);
+			 } else {
+			    s[t.sugu]=[t];
+			 }
+			}
+		  });
+		  muudaSood(s);
+		}
+		React.useEffect(() => {
+		   tutvuAndmetega();
+		}, [andmed, aktiivsedTasemed]);
+	    React.useEffect(() => {  
+  		  loeAndmed();
+		}, []);
+		function keeletasemeteLoetelu(){
+		     let m=[];
+			 let tasemed=Object.keys(keeletasemed);
+			 tasemed.forEach(function(tase){
+			   m.push(<li key={tase} onClick={() => tasemeVajutus(tase)}  style={{backgroundColor:
+			       (aktiivsedTasemed.find(e => e==tase))?
+				      "green":"white"}}>{tase}: {keeletasemed[tase].length}</li>);
+			 });
+			 return <ul>{m}</ul>
+		}
+		function sugudeLoetelu(){
+		     let m=[];
+			 let s=Object.keys(sood);
+			 s.sort(function(s1, s2){ //Kahanevasse järjekorda
+			    return sood[s2].length-sood[s1].length});
+			 s.forEach(function(sugu){
+			   m.push(<li key={sugu}>{sugu}: {sood[sugu].length}</li>);
+			 });
+			 return <ul>{m}</ul>
+		}
+		
+		function tasemeVajutus(tase){
+		   console.log(tase);
+		   if(aktiivsedTasemed.find(a2 => a2==tase)){
+		      muudaAktiivsedTasemed(
+			       aktiivsedTasemed.filter(e => e!=tase));
+		   } else {
+		      aktiivsedTasemed.push(tase);
+			  muudaAktiivsedTasemed([...aktiivsedTasemed]);
+		   }
+		}
+		
+		//Koostage sarnane sugude loetelu
+	    return <div>Üldarv {andmed.length} <br />
+		   {keeletasemeteLoetelu()}<br />
+		   {sugudeLoetelu()}<br />
+		   {aktiivsedTasemed}
+		 </div>;
+	}
+	const root= ReactDOM.createRoot(document.getElementById("kiht1"))
+	root.render(<Kuvamine />)
+  </script>
+</html>
+
+
+
