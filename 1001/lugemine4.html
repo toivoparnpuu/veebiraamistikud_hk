@@ -13,20 +13,8 @@
 </body>
 <script type="text/babel">
   function Kuvamine() {
-    const [teade, muudaTeade] = React.useState("abcd");
-    function ava(aadress) {
-      fetch(aadress).then(d => d.text()).then(t => muudaTeade(t));
-    }
-    React.useEffect(() => { 
-      ava("teade1.txt");
-    }, []); //käivitab ainult alguses
-
-    return <div><div>{teade}</div>
-      <div>
-        <input type="button" value="esimene" onClick={() => ava("teade1.txt")} />
-        <input type="button" value="teine" onClick={() => ava("teade2.txt")} />
-      </div>
-    </div>;
+    fetch("teated.json").then(d => d.json()).then(j => console.log(j));
+    return <div>abc</div>
   }
 
   const root = ReactDOM.createRoot(document.getElementById('kiht1'))
